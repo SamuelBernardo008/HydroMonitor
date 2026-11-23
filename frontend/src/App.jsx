@@ -2,9 +2,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
 import "./App.css";
 
-const API_URL = "http://127.0.0.1:5000";
-const RASPBERRY_IP = window.location.hostname || "192.168.1.15";
-const PORTA_WEBSOCKETS = 9001;
+const API_URL = import.meta.env.VITE_API_URL || "http://192.168.137.71:5000";
+const RASPBERRY_IP = import.meta.env.VITE_MQTT_HOST || "192.168.137.71";
+const PORTA_WEBSOCKETS = Number(import.meta.env.VITE_MQTT_PORT) || 9001;
 
 export default function App() {
   const [telemetria, setTelemetria] = useState(null);
@@ -354,7 +354,7 @@ export default function App() {
                 ⏱️ <strong>Gravação BD:</strong> a cada 2s
               </div>
               <div>
-                🔄 <strong>Auto-Refresh:</strong> 10s
+                🔄 <strong>Auto-Refresh:</strong> 2s
               </div>
               <div>
                 📏 <strong>Leitura Serial:</strong> 500ms
