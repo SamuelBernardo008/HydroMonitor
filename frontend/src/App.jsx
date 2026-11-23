@@ -1,10 +1,70 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
+import {
+  Droplets,
+  Unplug,
+  AlertTriangle,
+  Lock,
+  CheckCircle2,
+  AlertCircle,
+  XCircle,
+  HelpCircle,
+  Bell,
+  BellOff,
+  Settings,
+  Wifi,
+  WifiOff,
+  Database,
+  ServerOff,
+  BarChart3,
+  Clock,
+  RefreshCw,
+  Ruler,
+  Sun,
+  ShieldCheck,
+} from "lucide-react";
 import "./App.css";
+import "./themes.css";
+import { ThemeMenu } from "./components/ThemeMenu";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://192.168.137.71:5000";
 const RASPBERRY_IP = import.meta.env.VITE_MQTT_HOST || "192.168.137.71";
 const PORTA_WEBSOCKETS = Number(import.meta.env.VITE_MQTT_PORT) || 9001;
+
+const CHART_PALETTES = {
+  dark: {
+    border: "#00F5D4",
+    fill: "rgba(0, 187, 249, 0.18)",
+    pointBorder: "#00142F",
+    legend: "#cbd5e1",
+    ticks: "#93c5fd",
+    grid: "rgba(255, 255, 255, 0.08)",
+  },
+  light: {
+    border: "#0284c7",
+    fill: "rgba(2, 132, 199, 0.16)",
+    pointBorder: "#ffffff",
+    legend: "#1e293b",
+    ticks: "#334155",
+    grid: "rgba(15, 23, 42, 0.1)",
+  },
+  contrast: {
+    border: "#00ffff",
+    fill: "rgba(0, 255, 255, 0.2)",
+    pointBorder: "#000000",
+    legend: "#ffffff",
+    ticks: "#ffd600",
+    grid: "rgba(255, 255, 255, 0.3)",
+  },
+  comfort: {
+    border: "#2a6f63",
+    fill: "rgba(42, 111, 99, 0.16)",
+    pointBorder: "#f6f1e6",
+    legend: "#2b2720",
+    ticks: "#5c5446",
+    grid: "rgba(92, 84, 70, 0.15)",
+  },
+};
 
 export default function App() {
   const [telemetria, setTelemetria] = useState(null);
@@ -12,6 +72,9 @@ export default function App() {
   const [mqttConectado, setMqttConectado] = useState(false);
   const [servidorAtivo, setServidorAtivo] = useState(false);
   const [ultimaHora, setUltimaHora] = useState("--:--:--");
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("hydrosaver-theme") || "dark";
+  });
 
   const canvasRef = useRef(null);
   const chartRef = useRef(null);
@@ -33,6 +96,13 @@ export default function App() {
   // --- INICIALIZAÇÃO DO GRÁFICO (Chart.js) ---
   useEffect(() => {
     if (!canvasRef.current) return;
+    const initialTheme = localStorage.getItem("hydrosaver-theme") || "dark";
+    const palette = CHART_PALETTES[initialTheme] || CHART_PALETTES.dark;
+
+    if (chartRef.current) {
+      chartRef.current.destroy();
+      chartRef.current = null;
+    }
 
     chartRef.current = new Chart(canvasRef.current, {
       type: "line",
@@ -42,10 +112,10 @@ export default function App() {
           {
             label: "Distância (cm)",
             data: [],
-            borderColor: "#00F5D4",
-            backgroundColor: "rgba(0, 187, 249, 0.18)",
-            pointBackgroundColor: "#00F5D4",
-            pointBorderColor: "#00142F",
+            borderColor: palette.border,
+            backgroundColor: palette.fill,
+            pointBackgroundColor: palette.border,
+            pointBorderColor: palette.pointBorder,
             fill: true,
             tension: 0.35,
           },
@@ -55,18 +125,18 @@ export default function App() {
         responsive: true,
         plugins: {
           legend: {
-            labels: { color: "#cbd5e1" },
+            labels: { color: palette.legend },
           },
         },
         scales: {
           x: {
-            ticks: { color: "#93c5fd" },
-            grid: { color: "rgba(255, 255, 255, 0.06)" },
+            ticks: { color: palette.ticks },
+            grid: { color: palette.grid },
           },
           y: {
             beginAtZero: true,
-            ticks: { color: "#93c5fd" },
-            grid: { color: "rgba(255, 255, 255, 0.08)" },
+            ticks: { color: palette.ticks },
+            grid: { color: palette.grid },
           },
         },
       },
@@ -75,9 +145,31 @@ export default function App() {
     return () => {
       if (chartRef.current) {
         chartRef.current.destroy();
+        chartRef.current = null;
       }
     };
   }, []);
+
+  // --- SINCRONIZA O TEMA NO HTML, LOCALSTORAGE E GRÁFICO ---
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("hydrosaver-theme", theme);
+
+    const chart = chartRef.current;
+    const palette = CHART_PALETTES[theme] || CHART_PALETTES.dark;
+    if (chart && chart.canvas) {
+      chart.data.datasets[0].borderColor = palette.border;
+      chart.data.datasets[0].backgroundColor = palette.fill;
+      chart.data.datasets[0].pointBackgroundColor = palette.border;
+      chart.data.datasets[0].pointBorderColor = palette.pointBorder;
+      chart.options.plugins.legend.labels.color = palette.legend;
+      chart.options.scales.x.ticks.color = palette.ticks;
+      chart.options.scales.x.grid.color = palette.grid;
+      chart.options.scales.y.ticks.color = palette.ticks;
+      chart.options.scales.y.grid.color = palette.grid;
+      chart.update();
+    }
+  }, [theme]);
 
   // --- CONEXÃO MQTT (WebSockets) ---
   useEffect(() => {
@@ -148,7 +240,7 @@ export default function App() {
         aplicarLeitura(atualApi);
       }
 
-      if (chartRef.current) {
+      if (chartRef.current && chartRef.current.canvas) {
         const labels = lista.map((row) =>
           row.timestamp ? row.timestamp.split(" ")[1] || row.timestamp : ""
         );
@@ -196,48 +288,61 @@ export default function App() {
   // --- CÁLCULOS VISUAIS DO RESERVATÓRIO ---
   const tampaAberta = (telemetria?.luz ?? 0) > 200;
 
-  let bannerTexto = "🔌 Dispositivo Desconectado";
+  let BannerIcon = Unplug;
+  let bannerTexto = "Dispositivo Desconectado";
   let bannerClasse = "alert-banner alert-offline";
 
   if (telemetria) {
     if (tampaAberta) {
-      bannerTexto = "⚠️ TAMPA ABERTA (Luz Detectada!)";
+      BannerIcon = AlertTriangle;
+      bannerTexto = "TAMPA ABERTA (Luz Detectada!)";
       bannerClasse = "alert-banner alert-warn";
     } else {
-      bannerTexto = "🔒 Reservatório Fechado";
+      BannerIcon = Lock;
+      bannerTexto = "Reservatório Fechado";
       bannerClasse = "alert-banner alert-ok";
     }
   }
 
   let percent = 0;
-  let nivelTexto = "⚪ Dispositivo Desconectado";
+  let NivelIcon = HelpCircle;
+  let nivelTexto = "Dispositivo Desconectado";
   let nivelClasse = "level-badge level-0";
 
   if (telemetria) {
     if (telemetria.nivel === 1) {
       percent = 90;
-      nivelTexto = "🟢 Nível CHEIO (LED Verde)";
+      NivelIcon = CheckCircle2;
+      nivelTexto = "Nível CHEIO (LED Verde)";
       nivelClasse = "level-badge level-1";
     } else if (telemetria.nivel === 2) {
       percent = 50;
-      nivelTexto = "🟡 Nível MÉDIO (LED Amarelo)";
+      NivelIcon = AlertCircle;
+      nivelTexto = "Nível MÉDIO (LED Amarelo)";
       nivelClasse = "level-badge level-2";
     } else if (telemetria.nivel === 3) {
       percent = 15;
-      nivelTexto = "🔴 Nível CRÍTICO (LED Vermelho)";
+      NivelIcon = XCircle;
+      nivelTexto = "Nível CRÍTICO (LED Vermelho)";
       nivelClasse = "level-badge level-3";
     } else {
       percent = 0;
-      nivelTexto = "⚪ Status Indeterminado / Fora do Alcance";
+      NivelIcon = HelpCircle;
+      nivelTexto = "Status Indeterminado / Fora do Alcance";
       nivelClasse = "level-badge level-0";
     }
   }
 
   return (
-    <div>
+    <div className="app-shell">
+      <ThemeMenu theme={theme} setTheme={setTheme} />
+
       <header className="header">
         <h1>
-          💧 HIDRO<span className="header-accent">SAVER</span>
+          <Droplets size={34} className="header-icon" />
+          <span>
+            HIDRO<span className="header-accent">SAVER</span>
+          </span>
         </h1>
         <div className="header-bar" />
         <p>
@@ -250,7 +355,10 @@ export default function App() {
         <div className="card">
           <h2>Nível do Reservatório</h2>
 
-          <div className={bannerClasse}>{bannerTexto}</div>
+          <div className={bannerClasse}>
+            <BannerIcon size={17} className="icon-fixed" />
+            <span>{bannerTexto}</span>
+          </div>
 
           <div className="tank-wrapper">
             <div className={`tank-lid ${telemetria && tampaAberta ? "open" : ""}`} />
@@ -260,7 +368,10 @@ export default function App() {
             </div>
           </div>
 
-          <div className={nivelClasse}>{nivelTexto}</div>
+          <div className={nivelClasse}>
+            <NivelIcon size={17} className="icon-fixed" />
+            <span>{nivelTexto}</span>
+          </div>
 
           <div className="metrics-grid">
             <div className="metric-box">
@@ -274,19 +385,26 @@ export default function App() {
             <div className="metric-box">
               <span>Status do Alarme</span>
               <strong
+                className="metric-inline"
                 style={{
                   color: !telemetria
-                    ? "#ffffff"
+                    ? "var(--text-primary)"
                     : telemetria.alarme_silenciado
-                    ? "#fbbf24"
-                    : "#00F5D4",
+                    ? "var(--warn-text)"
+                    : "var(--accent-primary)",
                 }}
               >
-                {!telemetria
-                  ? "--"
-                  : telemetria.alarme_silenciado
-                  ? "🔕 Silenciado"
-                  : "🔔 Ativo"}
+                {!telemetria ? (
+                  "--"
+                ) : telemetria.alarme_silenciado ? (
+                  <>
+                    <BellOff size={16} /> Silenciado
+                  </>
+                ) : (
+                  <>
+                    <Bell size={16} /> Ativo
+                  </>
+                )}
               </strong>
             </div>
             <div className="metric-box">
@@ -303,10 +421,12 @@ export default function App() {
 
           <div className="btn-group">
             <button className="btn btn-mute" onClick={() => enviarComando("MUTE")}>
-              🔕 Silenciar Alarme
+              <BellOff size={17} />
+              <span>Silenciar Alarme</span>
             </button>
             <button className="btn btn-servo" onClick={() => enviarComando("SERVO")}>
-              ⚙️ Válvula
+              <Settings size={17} />
+              <span>Válvula</span>
             </button>
           </div>
         </div>
@@ -324,13 +444,29 @@ export default function App() {
             <li className="status-item">
               <span>Conexão MQTT:</span>
               <span className={`status-pill ${mqttConectado ? "pill-green" : "pill-red"}`}>
-                {mqttConectado ? "🟢 Conectado" : "🔴 Desconectado"}
+                {mqttConectado ? (
+                  <>
+                    <Wifi size={14} /> Conectado
+                  </>
+                ) : (
+                  <>
+                    <WifiOff size={14} /> Desconectado
+                  </>
+                )}
               </span>
             </li>
             <li className="status-item">
               <span>Servidor & Banco:</span>
               <span className={`status-pill ${servidorAtivo ? "pill-green" : "pill-red"}`}>
-                {servidorAtivo ? "💾 Ativo (dados.db)" : "🔴 Desativado"}
+                {servidorAtivo ? (
+                  <>
+                    <Database size={14} /> Ativo (dados.db)
+                  </>
+                ) : (
+                  <>
+                    <ServerOff size={14} /> Desativado
+                  </>
+                )}
               </span>
             </li>
             <li className="status-item">
@@ -348,25 +484,43 @@ export default function App() {
           </ul>
 
           <div className="diagnostico-box">
-            <strong className="diagnostico-titulo">📊 Parâmetros da Operação:</strong>
+            <strong className="diagnostico-titulo">
+              <BarChart3 size={16} className="icon-fixed" />
+              <span>Parâmetros da Operação:</span>
+            </strong>
             <div className="diagnostico-grid">
               <div>
-                ⏱️ <strong>Gravação BD:</strong> a cada 2s
+                <Clock size={14} className="icon-fixed" />
+                <span>
+                  <strong>Gravação BD:</strong> a cada 2s
+                </span>
               </div>
               <div>
-                🔄 <strong>Auto-Refresh:</strong> 2s
+                <RefreshCw size={14} className="icon-fixed" />
+                <span>
+                  <strong>Auto-Refresh:</strong> 2s
+                </span>
               </div>
               <div>
-                📏 <strong>Leitura Serial:</strong> 500ms
+                <Ruler size={14} className="icon-fixed" />
+                <span>
+                  <strong>Leitura Serial:</strong> 500ms
+                </span>
               </div>
               <div>
-                ☀️ <strong>Limiar Luz:</strong> LDR &gt; 200
+                <Sun size={14} className="icon-fixed" />
+                <span>
+                  <strong>Limiar Luz:</strong> LDR &gt; 200
+                </span>
               </div>
             </div>
             <hr className="diagnostico-divider" />
             <div className="diagnostico-regra">
-              🛡️ <strong>Regra de Segurança:</strong> Ao detectar nível crítico/cheio, o
-              servo ajusta a válvula automaticamente e dispara o alarme.
+              <ShieldCheck size={16} className="icon-fixed" />
+              <span>
+                <strong>Regra de Segurança:</strong> Ao detectar nível crítico/cheio, o
+                servo ajusta a válvula automaticamente e dispara o alarme.
+              </span>
             </div>
           </div>
         </div>
@@ -376,7 +530,8 @@ export default function App() {
           <div className="card-table-header">
             <h2>Registros do Banco de Dados (SQLite - Últimos 100)</h2>
             <button className="btn-refresh" onClick={carregarHistorico}>
-              🔄 Atualizar Tabela
+              <RefreshCw size={15} />
+              <span>Atualizar Tabela</span>
             </button>
           </div>
           <div className="table-wrapper">

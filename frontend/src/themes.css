@@ -1,0 +1,541 @@
+/* =========================================================
+   1. MODO ESCURO (PADRÃO ORIGINAL LIQUID GLASS)
+   ========================================================= */
+:root,
+[data-theme="dark"] {
+  --bg-page: radial-gradient(circle at 20% 0%, #002b6b 0%, #00142f 55%, #000b1a 100%);
+  --glass-bg: rgba(0, 28, 64, 0.55);
+  --card-border-width: 1.2px;
+  --card-border-gradient: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(0, 187, 249, 0.22) 35%,
+    rgba(0, 111, 252, 0.12) 65%,
+    rgba(0, 245, 212, 0.55) 100%
+  );
+  --card-shadow:
+    0 24px 48px rgba(0, 8, 24, 0.65),
+    inset 0 1px 1px rgba(255, 255, 255, 0.32),
+    inset 0 -1px 2px rgba(0, 245, 212, 0.22);
+
+  --subcard-bg: rgba(0, 20, 47, 0.45);
+  --subcard-border: rgba(255, 255, 255, 0.12);
+  --divider-color: rgba(255, 255, 255, 0.1);
+  --hover-tint: rgba(0, 187, 249, 0.1);
+
+  --text-primary: #ffffff;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+
+  --accent-primary: #00f5d4;
+  --accent-secondary: #00bbf9;
+  --accent-tertiary: #006ffc;
+  --header-glow: 0 0 24px rgba(0, 187, 249, 0.45);
+  --bar-glow: 0 0 12px #00f5d4;
+
+  --tank-bg: rgba(0, 20, 47, 0.55);
+  --tank-border: rgba(0, 187, 249, 0.55);
+  --tank-shadow: inset 0 0 24px rgba(0, 34, 255, 0.45), 0 0 20px rgba(0, 111, 252, 0.2);
+  --tank-lid-border: rgba(255, 255, 255, 0.45);
+  --tank-lid-shadow: 0 0 14px rgba(0, 187, 249, 0.4);
+  --water-gradient: linear-gradient(180deg, #00f5d4 0%, #00bbf9 45%, #006ffc 100%);
+  --water-glow: 0 -4px 16px rgba(0, 245, 212, 0.55);
+  --tank-pill-bg: rgba(0, 20, 47, 0.72);
+  --tank-pill-text: #ffffff;
+  --tank-pill-border: rgba(255, 255, 255, 0.28);
+
+  --ok-bg: rgba(0, 245, 212, 0.13);
+  --ok-text: #00f5d4;
+  --ok-border: rgba(0, 245, 212, 0.4);
+  --mid-bg: rgba(0, 187, 249, 0.16);
+  --mid-text: #7dd3fc;
+  --mid-border: rgba(0, 187, 249, 0.45);
+  --danger-bg: rgba(239, 68, 68, 0.18);
+  --danger-text: #fca5a5;
+  --danger-border: rgba(239, 68, 68, 0.45);
+  --warn-text: #fbbf24;
+
+  --btn-mute-bg: rgba(255, 255, 255, 0.07);
+  --btn-mute-border: rgba(255, 255, 255, 0.35);
+  --btn-servo-bg: linear-gradient(90deg, #00f5d4 0%, #00bbf9 45%, #006ffc 100%);
+  --btn-servo-text: #ffffff;
+  --btn-servo-border: none;
+  --btn-servo-shadow-text: 0 1px 3px rgba(0, 20, 47, 0.45);
+  --btn-servo-shadow: 0 6px 22px rgba(0, 187, 249, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+
+  --table-header-bg: rgba(0, 34, 255, 0.28);
+  --menu-bg: #041d3d;
+}
+
+/* =========================================================
+   2. MODO CLARO
+   ========================================================= */
+[data-theme="light"] {
+  --bg-page: linear-gradient(180deg, #dff0fb 0%, #f4f9fd 100%);
+  --glass-bg: rgba(255, 255, 255, 0.88);
+  --card-border-width: 1px;
+  --card-border-gradient: linear-gradient(135deg, #bae6fd 0%, #cbd5e1 100%);
+  --card-shadow: 0 12px 30px rgba(15, 45, 75, 0.08);
+
+  --subcard-bg: #eef6fc;
+  --subcard-border: #cde3f5;
+  --divider-color: #dbeafe;
+  --hover-tint: rgba(2, 132, 199, 0.08);
+
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+
+  --accent-primary: #0284c7;
+  --accent-secondary: #0ea5e9;
+  --accent-tertiary: #0369a1;
+  --header-glow: none;
+  --bar-glow: none;
+
+  --tank-bg: #e0f2fe;
+  --tank-border: #0284c7;
+  --tank-shadow: inset 0 0 16px rgba(2, 132, 199, 0.18);
+  --tank-lid-border: #0369a1;
+  --tank-lid-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
+  --water-gradient: linear-gradient(180deg, #38bdf8 0%, #0284c7 65%, #0369a1 100%);
+  --water-glow: none;
+  --tank-pill-bg: rgba(255, 255, 255, 0.9);
+  --tank-pill-text: #0f172a;
+  --tank-pill-border: #bae6fd;
+
+  --ok-bg: #dcfce7;
+  --ok-text: #15803d;
+  --ok-border: #86efac;
+  --mid-bg: #e0f2fe;
+  --mid-text: #0369a1;
+  --mid-border: #7dd3fc;
+  --danger-bg: #fee2e2;
+  --danger-text: #b91c1c;
+  --danger-border: #fca5a5;
+  --warn-text: #b45309;
+
+  --btn-mute-bg: #f1f5f9;
+  --btn-mute-border: #94a3b8;
+  --btn-servo-bg: linear-gradient(90deg, #0ea5e9 0%, #0284c7 100%);
+  --btn-servo-text: #ffffff;
+  --btn-servo-border: none;
+  --btn-servo-shadow-text: none;
+  --btn-servo-shadow: 0 6px 18px rgba(2, 132, 199, 0.28);
+
+  --table-header-bg: #e0f2fe;
+  --menu-bg: #ffffff;
+}
+
+/* =========================================================
+   3. MODO ALTO CONTRASTE (ACESSIBILIDADE WCAG AAA)
+   ========================================================= */
+[data-theme="contrast"] {
+  --bg-page: #000000;
+  --glass-bg: #000000;
+  --card-border-width: 2px;
+  --card-border-gradient: linear-gradient(135deg, #ffffff 0%, #ffd600 100%);
+  --card-shadow: none;
+
+  --subcard-bg: #0a0a0a;
+  --subcard-border: #ffd600;
+  --divider-color: #ffffff;
+  --hover-tint: #262626;
+
+  --text-primary: #ffffff;
+  --text-secondary: #ffffff;
+  --text-muted: #ffd600;
+
+  --accent-primary: #00ffff;
+  --accent-secondary: #ffd600;
+  --accent-tertiary: #00ffff;
+  --header-glow: none;
+  --bar-glow: none;
+
+  --tank-bg: #000000;
+  --tank-border: #ffffff;
+  --tank-shadow: none;
+  --tank-lid-border: #ffffff;
+  --tank-lid-shadow: none;
+  --water-gradient: #00ffff;
+  --water-glow: none;
+  --tank-pill-bg: #000000;
+  --tank-pill-text: #ffd600;
+  --tank-pill-border: #ffd600;
+
+  --ok-bg: #002b14;
+  --ok-text: #00ff66;
+  --ok-border: #00ff66;
+  --mid-bg: #292200;
+  --mid-text: #ffd600;
+  --mid-border: #ffd600;
+  --danger-bg: #3b0000;
+  --danger-text: #ff5555;
+  --danger-border: #ff5555;
+  --warn-text: #ffd600;
+
+  --btn-mute-bg: #000000;
+  --btn-mute-border: #ffffff;
+  --btn-servo-bg: #ffd600;
+  --btn-servo-text: #000000;
+  --btn-servo-border: 2px solid #ffffff;
+  --btn-servo-shadow-text: none;
+  --btn-servo-shadow: none;
+
+  --table-header-bg: #1a1a1a;
+  --menu-bg: #000000;
+}
+
+/* =========================================================
+   4. MODO CONFORTO VISUAL (TONS QUENTES / REDUÇÃO DE LUZ AZUL)
+   ========================================================= */
+[data-theme="comfort"] {
+  --bg-page: #ebe3d3;
+  --glass-bg: #f6f1e6;
+  --card-border-width: 1px;
+  --card-border-gradient: linear-gradient(135deg, #d6cbb5 0%, #c4b79c 100%);
+  --card-shadow: 0 8px 20px rgba(60, 50, 35, 0.08);
+
+  --subcard-bg: #e7decb;
+  --subcard-border: #cbbda3;
+  --divider-color: #d6cbb5;
+  --hover-tint: rgba(42, 111, 99, 0.1);
+
+  --text-primary: #2b2720;
+  --text-secondary: #4a4337;
+  --text-muted: #665e4f;
+
+  --accent-primary: #2a6f63;
+  --accent-secondary: #3b7a57;
+  --accent-tertiary: #235950;
+  --header-glow: none;
+  --bar-glow: none;
+
+  --tank-bg: #e2d8c3;
+  --tank-border: #2a6f63;
+  --tank-shadow: inset 0 0 14px rgba(42, 111, 99, 0.15);
+  --tank-lid-border: #235950;
+  --tank-lid-shadow: none;
+  --water-gradient: linear-gradient(180deg, #4b8f82 0%, #2a6f63 100%);
+  --water-glow: none;
+  --tank-pill-bg: #f6f1e6;
+  --tank-pill-text: #2b2720;
+  --tank-pill-border: #b8aa8f;
+
+  --ok-bg: #dce8dc;
+  --ok-text: #245738;
+  --ok-border: #9ec2a5;
+  --mid-bg: #f0e3c4;
+  --mid-text: #7a5818;
+  --mid-border: #d4bc85;
+  --danger-bg: #f2d5cf;
+  --danger-text: #8c2d23;
+  --danger-border: #d4968c;
+  --warn-text: #945d14;
+
+  --btn-mute-bg: #e7decb;
+  --btn-mute-border: #9c8f76;
+  --btn-servo-bg: linear-gradient(90deg, #3b7a57 0%, #2a6f63 100%);
+  --btn-servo-text: #fdfaf2;
+  --btn-servo-border: none;
+  --btn-servo-shadow-text: none;
+  --btn-servo-shadow: 0 4px 12px rgba(42, 111, 99, 0.25);
+
+  --table-header-bg: #e2d8c3;
+  --menu-bg: #f6f1e6;
+}
+
+/* =========================================================
+   APLICAÇÃO GLOBAL BASE
+   ========================================================= */
+:root {
+  --font-sans: "Inter Variable", "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-page) !important;
+  color: var(--text-primary);
+  transition: background 0.25s ease, color 0.25s ease;
+  min-height: 100vh;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+.app-shell {
+  position: relative;
+}
+
+[data-theme="contrast"] button:focus-visible {
+  outline: 3px solid #ffd600;
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   ESTILOS DO MENU FLUTUANTE DE APARÊNCIA
+   ========================================================= */
+.theme-menu-wrapper {
+  position: fixed;
+  top: 18px;
+  right: 22px;
+  z-index: 1000;
+  font-family: inherit;
+}
+
+.theme-menu-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--subcard-border);
+  box-shadow: var(--card-shadow);
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: transform 0.15s ease, border-color 0.2s ease;
+}
+
+.theme-menu-trigger:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent-primary);
+}
+
+.theme-menu-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 275px;
+  padding: 12px;
+  border-radius: 18px;
+  background: var(--menu-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--subcard-border);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.theme-menu-title {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  padding: 2px 6px 4px;
+  font-weight: 700;
+}
+
+.theme-option-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--subcard-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--subcard-border);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.theme-option-btn:hover {
+  background: var(--hover-tint);
+}
+
+.theme-option-btn.active {
+  border: 2px solid var(--accent-primary);
+}
+
+.theme-option-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.theme-option-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.theme-option-desc {
+  font-size: 0.73rem;
+  color: var(--text-muted);
+}
+
+.theme-badge-active {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+}
+
+@media (max-width: 640px) {
+  .theme-menu-wrapper {
+    position: static;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+  }
+}
+
+/* =========================================================
+   ESTILOS DO MENU FLUTUANTE DE APARÊNCIA E ZOOM
+   ========================================================= */
+.theme-menu-wrapper {
+  position: fixed;
+  top: 18px;
+  right: 22px;
+  z-index: 1000;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.theme-dropdown-anchor {
+  position: relative;
+}
+
+.theme-menu-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--subcard-border);
+  box-shadow: var(--card-shadow);
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: transform 0.15s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.theme-menu-trigger:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: var(--accent-primary);
+}
+
+.theme-menu-trigger:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.theme-menu-trigger:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.zoom-btn {
+  padding: 9px 14px;
+}
+
+.theme-menu-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 275px;
+  padding: 12px;
+  border-radius: 18px;
+  background: var(--menu-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--subcard-border);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.theme-menu-title {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  padding: 2px 6px 4px;
+  font-weight: 700;
+}
+
+.theme-option-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--subcard-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--subcard-border);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.theme-option-btn:hover {
+  background: var(--hover-tint);
+}
+
+.theme-option-btn.active {
+  border: 2px solid var(--accent-primary);
+}
+
+.theme-option-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.theme-option-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.theme-option-desc {
+  font-size: 0.73rem;
+  color: var(--text-muted);
+}
+
+.theme-badge-active {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+}
+
+@media (max-width: 768px) {
+  .theme-menu-wrapper {
+    position: static;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    margin-bottom: 14px;
+  }
+}
+
+/* =========================================================
+   CANTOS RETOS NO MODO ALTO CONTRASTE
+   ========================================================= */
+[data-theme="contrast"] *,
+[data-theme="contrast"] *::before,
+[data-theme="contrast"] *::after {
+  border-radius: 0 !important;
+}
