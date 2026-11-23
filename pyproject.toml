@@ -1,0 +1,13 @@
+[project]
+name = "hydrosaver"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "flask>=3.1.3",
+    "flask-cors>=6.0.5",
+    "pyjwt>=2.15.1",
+    "pyserial>=3.5",
+    "requests>=2.34.2",
+]

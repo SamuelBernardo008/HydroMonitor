@@ -1,0 +1,22 @@
+# Python & uv
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Banco de dados local (SQLite)
+*.db
+*.sqlite
+*.sqlite3
+backend/data/
+
+# Node & Frontend (Vite/React)
+frontend/node_modules/
+frontend/dist/
+.env
+.env.local
+
+# Editores e Sistema
+.vscode/
+.DS_Store
+Thumbs.db
