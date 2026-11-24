@@ -13,12 +13,22 @@ import {
 
 export function ThemeMenu({ theme, setTheme }) {
   const [open, setOpen] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth : 1280
+  );
   const [zoom, setZoom] = useState(() => {
     const saved = Number(localStorage.getItem("hydrosaver-zoom"));
     return saved >= 80 && saved <= 130 ? saved : 100;
   });
 
   const menuRef = useRef(null);
+
+  // Atualiza largura da tela para responsividade
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Aplica o nível de zoom na página e salva no localStorage
   useEffect(() => {
@@ -56,39 +66,71 @@ export function ThemeMenu({ theme, setTheme }) {
   const toggleContrast = () => setTheme(isContrast ? "dark" : "contrast");
   const toggleComfort = () => setTheme(isComfort ? "dark" : "comfort");
 
+  const isTablet = screenWidth <= 900;
+  const isMobile = screenWidth <= 640;
+
+  const wrapperStyle = {
+    position: "relative",
+    zIndex: 1000,
+    display: "flex",
+    alignItems: "center",
+    gap: isMobile ? "5px" : "8px",
+  };
+
+  const triggerStyle = isTablet
+    ? {
+        padding: isMobile ? "6px 9px" : "7px 12px",
+        fontSize: isMobile ? "0.78rem" : "0.82rem",
+        gap: "5px",
+      }
+    : {};
+
+  const dropdownStyle = {
+    position: "absolute",
+    top: "calc(100% + 10px)",
+    left: 0,
+    right: "auto",
+    width: "275px",
+    maxWidth: "calc(100vw - 24px)",
+    zIndex: 1001,
+  };
+
   return (
-    <div className="theme-menu-wrapper" ref={menuRef}>
+    <div className="theme-menu-wrapper" style={wrapperStyle} ref={menuRef}>
       {/* Botão -Zoom */}
       <button
         type="button"
         className="theme-menu-trigger zoom-btn"
+        style={triggerStyle}
         onClick={handleZoomOut}
         disabled={zoom <= 80}
         title={`Diminuir zoom (Atual: ${zoom}%)`}
         aria-label="Diminuir zoom"
       >
         <ZoomOut size={16} />
-        <span>Zoom</span>
+        {!isMobile && <span>Zoom</span>}
       </button>
 
       {/* Botão +Zoom */}
       <button
         type="button"
         className="theme-menu-trigger zoom-btn"
+        style={triggerStyle}
         onClick={handleZoomIn}
         disabled={zoom >= 130}
         title={`Aumentar zoom (Atual: ${zoom}%)`}
         aria-label="Aumentar zoom"
       >
         <ZoomIn size={16} />
-        <span>Zoom</span>
+        {!isMobile && <span>Zoom</span>}
       </button>
 
       {/* Menu Suspenso de Aparência */}
-      <div className="theme-dropdown-anchor">
+      <div className="theme-dropdown-anchor" style={{ position: "relative" }}>
         <button
           type="button"
           className="theme-menu-trigger"
+          style={triggerStyle}
           onClick={() => setOpen((prev) => !prev)}
           aria-expanded={open}
           aria-label="Abrir menu de aparência e acessibilidade"
@@ -99,7 +141,7 @@ export function ThemeMenu({ theme, setTheme }) {
         </button>
 
         {open && (
-          <div className="theme-menu-dropdown" role="menu">
+          <div className="theme-menu-dropdown" style={dropdownStyle} role="menu">
             <div className="theme-menu-title">Exibição e Acessibilidade</div>
 
             {/* Botão 1: Alternar Claro / Escuro */}
@@ -176,3 +218,5 @@ export function ThemeMenu({ theme, setTheme }) {
     </div>
   );
 }
+
+export default ThemeMenu;

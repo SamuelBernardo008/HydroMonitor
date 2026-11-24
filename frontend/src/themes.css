@@ -245,7 +245,7 @@
 }
 
 /* =========================================================
-   APLICAÇÃO GLOBAL BASE
+   5. APLICAÇÃO GLOBAL BASE
    ========================================================= */
 :root {
   --font-sans: "Inter Variable", "Inter", system-ui, -apple-system, sans-serif;
@@ -277,134 +277,18 @@ textarea {
 }
 
 /* =========================================================
-   ESTILOS DO MENU FLUTUANTE DE APARÊNCIA
+   6. MENU DE APARÊNCIA E ZOOM (TOPO ESQUERDO, ROLA COM A PÁGINA)
    ========================================================= */
 .theme-menu-wrapper {
-  position: fixed;
-  top: 18px;
-  right: 22px;
-  z-index: 1000;
-  font-family: inherit;
-}
-
-.theme-menu-trigger {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 16px;
-  border-radius: 999px;
-  background: var(--glass-bg);
-  color: var(--text-primary);
-  border: 1px solid var(--subcard-border);
-  box-shadow: var(--card-shadow);
-  cursor: pointer;
-  font-size: 0.88rem;
-  font-weight: 600;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  transition: transform 0.15s ease, border-color 0.2s ease;
-}
-
-.theme-menu-trigger:hover {
-  transform: translateY(-1px);
-  border-color: var(--accent-primary);
-}
-
-.theme-menu-dropdown {
   position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
-  width: 275px;
-  padding: 12px;
-  border-radius: 18px;
-  background: var(--menu-bg);
-  color: var(--text-primary);
-  border: 1px solid var(--subcard-border);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.theme-menu-title {
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-muted);
-  padding: 2px 6px 4px;
-  font-weight: 700;
-}
-
-.theme-option-btn {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: var(--subcard-bg);
-  color: var(--text-primary);
-  border: 1px solid var(--subcard-border);
-  cursor: pointer;
-  text-align: left;
-  transition: background 0.15s ease, border-color 0.15s ease;
-}
-
-.theme-option-btn:hover {
-  background: var(--hover-tint);
-}
-
-.theme-option-btn.active {
-  border: 2px solid var(--accent-primary);
-}
-
-.theme-option-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.theme-option-label {
-  font-size: 0.88rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.theme-option-desc {
-  font-size: 0.73rem;
-  color: var(--text-muted);
-}
-
-.theme-badge-active {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--accent-primary);
-}
-
-@media (max-width: 640px) {
-  .theme-menu-wrapper {
-    position: static;
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 12px;
-  }
-}
-
-/* =========================================================
-   ESTILOS DO MENU FLUTUANTE DE APARÊNCIA E ZOOM
-   ========================================================= */
-.theme-menu-wrapper {
-  position: fixed;
-  top: 18px;
-  right: 22px;
+  top: 14px;
+  left: 20px;
+  right: auto;
   z-index: 1000;
   font-family: inherit;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .theme-dropdown-anchor {
@@ -414,16 +298,17 @@ textarea {
 .theme-menu-trigger {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 9px 16px;
+  gap: 7px;
+  padding: 9px 15px;
   border-radius: 999px;
   background: var(--glass-bg);
   color: var(--text-primary);
   border: 1px solid var(--subcard-border);
   box-shadow: var(--card-shadow);
   cursor: pointer;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   font-weight: 600;
+  white-space: nowrap;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   transition: transform 0.15s ease, border-color 0.2s ease, opacity 0.2s ease;
@@ -444,14 +329,16 @@ textarea {
 }
 
 .zoom-btn {
-  padding: 9px 14px;
+  padding: 9px 13px;
 }
 
 .theme-menu-dropdown {
   position: absolute;
   top: calc(100% + 10px);
-  right: 0;
+  left: 0;
+  right: auto;
   width: 275px;
+  max-width: calc(100vw - 24px);
   padding: 12px;
   border-radius: 18px;
   background: var(--menu-bg);
@@ -461,6 +348,7 @@ textarea {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  z-index: 1001;
 }
 
 .theme-menu-title {
@@ -521,18 +409,39 @@ textarea {
   color: var(--accent-primary);
 }
 
-@media (max-width: 768px) {
+/* =========================================================
+   7. RESPONSIVIDADE (EVITA COLISÃO COM LOGO E LOGOUT)
+   ========================================================= */
+@media (max-width: 1120px) {
+  .app-shell {
+    padding-top: 56px;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-shell {
+    padding-top: 52px;
+  }
+
   .theme-menu-wrapper {
-    position: static;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    margin-bottom: 14px;
+    top: 10px;
+    left: 10px;
+    gap: 5px;
+  }
+
+  .theme-menu-trigger {
+    padding: 6px 9px;
+    font-size: 0.78rem;
+    gap: 5px;
+  }
+
+  .zoom-btn {
+    padding: 6px 9px;
   }
 }
 
 /* =========================================================
-   CANTOS RETOS NO MODO ALTO CONTRASTE
+   8. CANTOS RETOS NO MODO ALTO CONTRASTE
    ========================================================= */
 [data-theme="contrast"] *,
 [data-theme="contrast"] *::before,
